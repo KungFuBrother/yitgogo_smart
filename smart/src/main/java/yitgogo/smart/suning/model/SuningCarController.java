@@ -32,7 +32,7 @@ public class SuningCarController {
         return dataManager.containData(sku);
     }
 
-    public static boolean addProduct(ModelProductDetail productDetail) {
+    public static boolean addProduct(ModelProduct productDetail) {
         if (!containProduct(productDetail.getSku())) {
             ContentValues values = new ContentValues();
             values.put(SuningCarDataManager.column_sku, productDetail.getSku());

@@ -210,32 +210,19 @@ public class HomeFragment extends BaseNotifyFragment {
         productGridView.setAdapter(productAdapter);
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.home_part_theme_layout,
-                        PartThemeFragment.getThemeFragment())
-                .replace(R.id.home_part_class_layout,
-                        PartClassFragment.getClassFragment())
-                .replace(R.id.home_part_miaosha_layout,
-                        PartMiaoshaFragment.getMiaoshaFragment())
-                .replace(R.id.home_part_fresh_layout,
-                        PartFreshFragment.getFreshFragment())
-                .replace(R.id.home_part_sale_time_layout,
-                        PartSaleTimeFragment.getSaleTimeFragment())
-                .replace(R.id.home_part_brand_layout,
-                        PartBrandFragment.getBrandFragment())
-                .replace(R.id.home_part_tejia_layout,
-                        PartTejiaFragment.getTejiaFragment())
-                .replace(R.id.home_part_score_layout,
-                        PartScoreFragment.getScoreFragment())
-                .replace(R.id.home_part_local_layout,
-                        PartLocalBusinessFragment.getLocalBusinessFragment())
-                .replace(R.id.home_part_local_sale_miaosha_layout,
-                        PartLocalMiaoshaFragment.getLocalMiaoshaFragment())
-                .replace(R.id.home_part_local_sale_tejia_layout,
-                        PartLocalTejiaFragment.getLocalTejiaFragment())
-                .replace(R.id.home_part_store_layout,
-                        PartStoreFragment.getStoreFragment())
-                .replace(R.id.home_part_ads_layout,
-                        PartAdsFragment.getAdsFragment()).commit();
+                .replace(R.id.home_part_theme_layout, PartThemeFragment.getThemeFragment())
+                .replace(R.id.home_part_class_layout, PartClassFragment.getClassFragment())
+                .replace(R.id.home_part_miaosha_layout, PartMiaoshaFragment.getMiaoshaFragment())
+                .replace(R.id.home_part_fresh_layout, PartFreshFragment.getFreshFragment())
+                .replace(R.id.home_part_sale_time_layout, PartSaleTimeFragment.getSaleTimeFragment())
+                .replace(R.id.home_part_brand_layout, PartBrandFragment.getBrandFragment())
+                .replace(R.id.home_part_tejia_layout, PartTejiaFragment.getTejiaFragment())
+                .replace(R.id.home_part_score_layout, PartScoreFragment.getScoreFragment())
+                .replace(R.id.home_part_local_layout, PartLocalBusinessFragment.getLocalBusinessFragment())
+                .replace(R.id.home_part_local_sale_miaosha_layout, PartLocalMiaoshaFragment.getLocalMiaoshaFragment())
+                .replace(R.id.home_part_local_sale_tejia_layout, PartLocalTejiaFragment.getLocalTejiaFragment())
+                .replace(R.id.home_part_store_layout, PartStoreFragment.getStoreFragment())
+                .replace(R.id.home_part_ads_layout, PartAdsFragment.getAdsFragment()).commit();
         getNewData();
     }
 
@@ -261,8 +248,7 @@ public class HomeFragment extends BaseNotifyFragment {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                                     long arg3) {
-                showProductDetail(products.get(arg2).getId(),
-                        QrCodeTool.SALE_TYPE_NONE);
+                showProductDetail(products.get(arg2).getId(), QrCodeTool.SALE_TYPE_NONE);
             }
         });
         nongfuImageView.setOnClickListener(new OnClickListener() {

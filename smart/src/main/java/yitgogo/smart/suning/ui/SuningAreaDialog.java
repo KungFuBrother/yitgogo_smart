@@ -29,11 +29,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import yitgogo.smart.suning.model.API_SUNING;
 import yitgogo.smart.suning.model.GetNewSignature;
 import yitgogo.smart.suning.model.ModelSuningArea;
 import yitgogo.smart.suning.model.ModelSuningAreas;
 import yitgogo.smart.suning.model.SuningManager;
+import yitgogo.smart.tools.API;
 import yitgogo.smart.tools.MissionController;
 import yitgogo.smart.view.Notify;
 
@@ -265,7 +265,7 @@ public class SuningAreaDialog extends DialogFragment {
                 e.printStackTrace();
             }
             nameValuePairs.add(new BasicNameValuePair("data", data.toString()));
-            return MissionController.post(API_SUNING.API_AREA_PROVINCE, nameValuePairs);
+            return MissionController.post(API.API_SUNING_AREA_PROVINCE, nameValuePairs);
         }
 
         @Override
@@ -332,7 +332,7 @@ public class SuningAreaDialog extends DialogFragment {
                 e.printStackTrace();
             }
             nameValuePairs.add(new BasicNameValuePair("data", data.toString()));
-            return MissionController.post(API_SUNING.API_AREA_CITY, nameValuePairs);
+            return MissionController.post(API.API_SUNING_AREA_CITY, nameValuePairs);
         }
 
         @Override
@@ -400,7 +400,7 @@ public class SuningAreaDialog extends DialogFragment {
                 e.printStackTrace();
             }
             nameValuePairs.add(new BasicNameValuePair("data", data.toString()));
-            return MissionController.post(API_SUNING.API_AREA_DISTRICT, nameValuePairs);
+            return MissionController.post(API.API_SUNING_AREA_DISTRICT, nameValuePairs);
         }
 
         @Override
@@ -469,7 +469,7 @@ public class SuningAreaDialog extends DialogFragment {
                 e.printStackTrace();
             }
             nameValuePairs.add(new BasicNameValuePair("data", data.toString()));
-            return MissionController.post(API_SUNING.API_AREA_TOWN, nameValuePairs);
+            return MissionController.post(API.API_SUNING_AREA_TOWN, nameValuePairs);
         }
 
         @Override

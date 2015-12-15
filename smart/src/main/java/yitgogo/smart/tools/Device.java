@@ -16,7 +16,7 @@ import yitgogo.smart.model.ModelMachineArea;
 
 public class Device {
 
-    private static String deviceCode = "";
+    private static String deviceCode = "4a332b20bba343773a70d9b3d9a42196";
     private static BDLocation location = null;
     private static ModelMachineArea machineArea = new ModelMachineArea();
 
@@ -30,7 +30,7 @@ public class Device {
         if (!codeFile.exists()) {
             writeSDFile(codeFile, MD5.GetMD5Code(new Date().getTime() + ""));
         }
-        setDeviceCode(readSDFile(codeFile));
+//        setDeviceCode(readSDFile(codeFile));
     }
 
     public static void setDeviceCode(String deviceCode) {

@@ -29,12 +29,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import yitgogo.smart.BaseNotifyFragment;
-import yitgogo.smart.suning.model.API_SUNING;
 import yitgogo.smart.suning.model.GetNewSignature;
 import yitgogo.smart.suning.model.ModelProductPrice;
 import yitgogo.smart.suning.model.ModelSuningCar;
 import yitgogo.smart.suning.model.SuningCarController;
 import yitgogo.smart.suning.model.SuningManager;
+import yitgogo.smart.tools.API;
 import yitgogo.smart.tools.MissionController;
 import yitgogo.smart.tools.Parameters;
 import yitgogo.smart.view.Notify;
@@ -354,7 +354,7 @@ public class ShoppingCarFragment extends BaseNotifyFragment {
             }
             List<NameValuePair> nameValuePairs = new ArrayList<>();
             nameValuePairs.add(new BasicNameValuePair("data", data.toString()));
-            return MissionController.post(API_SUNING.API_PRODUCT_PRICE, nameValuePairs);
+            return MissionController.post(API.API_SUNING_PRODUCT_PRICE, nameValuePairs);
         }
 
         /**
@@ -428,7 +428,7 @@ public class ShoppingCarFragment extends BaseNotifyFragment {
                 }
                 List<NameValuePair> nameValuePairs = new ArrayList<>();
                 nameValuePairs.add(new BasicNameValuePair("data", data.toString()));
-                String result = MissionController.post(API_SUNING.API_PRODUCT_STOCK, nameValuePairs);
+                String result = MissionController.post(API.API_SUNING_PRODUCT_STOCK, nameValuePairs);
                 //令牌过期
                 if (SuningManager.isSignatureOutOfDate(result)) {
                     return 2;

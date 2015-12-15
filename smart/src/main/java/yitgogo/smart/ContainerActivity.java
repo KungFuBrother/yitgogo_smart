@@ -41,7 +41,6 @@ import java.util.Date;
 
 import yitgogo.smart.print.PrintData;
 import yitgogo.smart.print.Printer;
-import yitgogo.smart.suning.model.API_SUNING;
 import yitgogo.smart.tools.API;
 import yitgogo.smart.tools.Device;
 import yitgogo.smart.tools.weather.model.ModelWeatherInfo;
@@ -154,7 +153,7 @@ public class ContainerActivity extends BaseActivity {
         disconnectTextView = (TextView) findViewById(R.id.container_disconnect);
 
         ipTextView = (TextView) findViewById(R.id.container_ip);
-        ipTextView.setText(API.API_IP + "\n" + API_SUNING.IP_SUNING);
+        ipTextView.setText(API.IP_PUBLIC + "\n" + API.IP_SUNING);
 
         initViews();
         registerViews();

@@ -27,7 +27,6 @@ import com.umeng.analytics.MobclickAgent;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,13 +34,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import yitgogo.smart.BaseNotifyFragment;
-import yitgogo.smart.suning.model.API_SUNING;
 import yitgogo.smart.suning.model.GetNewSignature;
-import yitgogo.smart.suning.model.ModelProductDetail;
-import yitgogo.smart.suning.model.ModelProductImage;
+import yitgogo.smart.suning.model.ModelProduct;
 import yitgogo.smart.suning.model.ModelProductPrice;
 import yitgogo.smart.suning.model.SuningCarController;
 import yitgogo.smart.suning.model.SuningManager;
+import yitgogo.smart.tools.API;
 import yitgogo.smart.tools.MissionController;
 import yitgogo.smart.tools.Parameters;
 import yitgogo.smart.tools.ScreenUtil;
@@ -60,10 +58,8 @@ public class ProductDetailFragment extends BaseNotifyFragment {
 
     ImageAdapter imageAdapter;
 
-    ModelProductDetail productDetail = new ModelProductDetail();
+    ModelProduct productDetail = new ModelProduct();
     ModelProductPrice productPrice = new ModelProductPrice();
-
-    List<ModelProductImage> productImages = new ArrayList<>();
 
     Bundle bundle = new Bundle();
 
@@ -97,7 +93,6 @@ public class ProductDetailFragment extends BaseNotifyFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         new GetProductStock().execute();
-        new GetProductImages().execute();
     }
 
     private void init() throws JSONException {
@@ -105,7 +100,7 @@ public class ProductDetailFragment extends BaseNotifyFragment {
         bundle = getArguments();
         if (bundle != null) {
             if (bundle.containsKey("product")) {
-                productDetail = new ModelProductDetail(new JSONObject(bundle.getString("product")));
+                productDetail = new ModelProduct(new JSONObject(bundle.getString("product")));
             }
             if (bundle.containsKey("price")) {
                 productPrice = new ModelProductPrice(new JSONObject(bundle.getString("price")));
@@ -293,7 +288,7 @@ public class ProductDetailFragment extends BaseNotifyFragment {
 
         @Override
         public int getCount() {
-            return productImages.size();
+            return productDetail.getImages().size();
         }
 
         @Override
@@ -305,25 +300,24 @@ public class ProductDetailFragment extends BaseNotifyFragment {
                     .findViewById(R.id.view_pager_img);
             final ProgressBar spinner = (ProgressBar) imageLayout
                     .findViewById(R.id.view_pager_loading);
-            ImageLoader.getInstance().displayImage(productImages.get(position).getPath(),
-                    imageView, new SimpleImageLoadingListener() {
-                        @Override
-                        public void onLoadingStarted(String imageUri, View view) {
-                            spinner.setVisibility(View.VISIBLE);
-                        }
+            ImageLoader.getInstance().displayImage(productDetail.getImages().get(position).getImg(), imageView, new SimpleImageLoadingListener() {
+                @Override
+                public void onLoadingStarted(String imageUri, View view) {
+                    spinner.setVisibility(View.VISIBLE);
+                }
 
-                        @Override
-                        public void onLoadingFailed(String imageUri, View view,
-                                                    FailReason failReason) {
-                            spinner.setVisibility(View.GONE);
-                        }
+                @Override
+                public void onLoadingFailed(String imageUri, View view,
+                                            FailReason failReason) {
+                    spinner.setVisibility(View.GONE);
+                }
 
-                        @Override
-                        public void onLoadingComplete(String imageUri,
-                                                      View view, Bitmap loadedImage) {
-                            spinner.setVisibility(View.GONE);
-                        }
-                    });
+                @Override
+                public void onLoadingComplete(String imageUri,
+                                              View view, Bitmap loadedImage) {
+                    spinner.setVisibility(View.GONE);
+                }
+            });
             view.addView(imageLayout, 0);
             return imageLayout;
         }
@@ -340,76 +334,6 @@ public class ProductDetailFragment extends BaseNotifyFragment {
         @Override
         public Parcelable saveState() {
             return null;
-        }
-    }
-
-    class GetProductImages extends AsyncTask<Void, Void, String> {
-        @Override
-        protected String doInBackground(Void... params) {
-            JSONArray dataArray = new JSONArray();
-            dataArray.put(productDetail.getSku());
-            JSONObject data = new JSONObject();
-            try {
-                data.put("accessToken", SuningManager.getSignature().getToken());
-                data.put("appKey", SuningManager.appKey);
-                data.put("v", SuningManager.version);
-                data.put("sku", dataArray);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            List<NameValuePair> nameValuePairs = new ArrayList<>();
-            nameValuePairs.add(new BasicNameValuePair("data", data.toString()));
-            /**
-             *{"result":[{"skuId":"108246148","price":15000.00}],"isSuccess":true,"returnMsg":"查询成功。"}
-             */
-            return MissionController.post(API_SUNING.API_PRODUCT_IMAGES, nameValuePairs);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            if (SuningManager.isSignatureOutOfDate(result)) {
-                GetNewSignature getNewSignature = new GetNewSignature() {
-                    @Override
-                    protected void onPreExecute() {
-                        showLoading();
-                    }
-
-                    @Override
-                    protected void onPostExecute(Boolean isSuccess) {
-                        hideLoading();
-                        if (isSuccess) {
-                            new GetProductImages().execute();
-                        }
-                    }
-                };
-                getNewSignature.execute();
-                return;
-            }
-            if (!TextUtils.isEmpty(result)) {
-                try {
-                    JSONObject object = new JSONObject(result);
-                    if (object.optBoolean("isSuccess")) {
-                        JSONArray array = object.optJSONArray("result");
-                        if (array != null) {
-                            if (array.length() > 0) {
-                                JSONObject imageObject = array.optJSONObject(0);
-                                if (imageObject != null) {
-                                    JSONArray imageArray = imageObject.optJSONArray("urls");
-                                    if (imageArray != null) {
-                                        for (int i = 0; i < imageArray.length(); i++) {
-                                            productImages.add(new ModelProductImage(imageArray.optJSONObject(i)));
-                                        }
-                                        imageAdapter.notifyDataSetChanged();
-                                        imageIndexText.setText("1/" + imageAdapter.getCount());
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 
@@ -436,7 +360,7 @@ public class ProductDetailFragment extends BaseNotifyFragment {
             }
             List<NameValuePair> nameValuePairs = new ArrayList<>();
             nameValuePairs.add(new BasicNameValuePair("data", data.toString()));
-            return MissionController.post(API_SUNING.API_PRODUCT_STOCK, nameValuePairs);
+            return MissionController.post(API.API_SUNING_PRODUCT_STOCK, nameValuePairs);
         }
 
         @Override

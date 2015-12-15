@@ -1,4 +1,4 @@
-package yitgogo.smart.suning.ui;
+package yitgogo.smart.search;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartown.yitgogo.smart.R;
@@ -36,47 +37,34 @@ import smartown.controller.mission.RequestMessage;
 import yitgogo.smart.BaseNotifyFragment;
 import yitgogo.smart.suning.model.GetNewSignature;
 import yitgogo.smart.suning.model.ModelProduct;
-import yitgogo.smart.suning.model.ModelProductClass;
 import yitgogo.smart.suning.model.ModelProductPrice;
 import yitgogo.smart.suning.model.SuningManager;
+import yitgogo.smart.suning.ui.ProductDetailFragment;
+import yitgogo.smart.suning.ui.SuningAreaDialog;
 import yitgogo.smart.tools.API;
 import yitgogo.smart.tools.Parameters;
 import yitgogo.smart.view.InnerGridView;
 import yitgogo.smart.view.Notify;
 
-
-public class SuningProductFragment extends BaseNotifyFragment {
+public class ProductSearchCloudFragment extends BaseNotifyFragment {
 
     PullToRefreshScrollView refreshScrollView;
     InnerGridView productGridView;
-
-    TextView productAreaTextView;
-    LinearLayout productAreaSelectButton;
-
-    ModelProductClass productClass = new ModelProductClass();
 
     List<ModelProduct> products = new ArrayList<>();
     HashMap<String, ModelProductPrice> priceHashMap = new HashMap<>();
 
     ProductAdapter productAdapter;
 
-    SuningClassesFragment classesFragment = new SuningClassesFragment() {
-
-        @Override
-        public void onClassSelected(ModelProductClass selectedProductClass) {
-            if (productClass == selectedProductClass) return;
-            productClass = selectedProductClass;
-            refresh();
-        }
-
-    };
 
     int pagesize = 12, pagenum = 0;
+
+    String searchName = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_suning_product_list);
+        setContentView(R.layout.fragment_search_products);
         init();
         findViews();
     }
@@ -84,21 +72,10 @@ public class SuningProductFragment extends BaseNotifyFragment {
     @Override
     public void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart(SuningProductFragment.class.getName());
-        if (!TextUtils.isEmpty(SuningManager.getSuningAreas().getTown().getCode())) {
-            showSuningAreas();
+        MobclickAgent.onPageStart(ProductSearchCloudFragment.class.getName());
+        if (pagenum > 0) {
+            return;
         }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd(SuningProductFragment.class.getName());
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         if (TextUtils.isEmpty(SuningManager.getSuningAreas().getTown().getCode())) {
             SuningAreaDialog suningAreaDialog = new SuningAreaDialog() {
                 @Override
@@ -107,56 +84,65 @@ public class SuningProductFragment extends BaseNotifyFragment {
                     if (TextUtils.isEmpty(SuningManager.getSuningAreas().getTown().getCode())) {
                         getActivity().finish();
                     } else {
-                        showSuningAreas();
-                        getFragmentManager().beginTransaction().replace(R.id.suning_product_list_class, classesFragment).commit();
+                        refresh();
                     }
                 }
             };
             suningAreaDialog.show(getFragmentManager(), null);
         } else {
-            showSuningAreas();
-            getFragmentManager().beginTransaction().replace(R.id.suning_product_list_class, classesFragment).commit();
+            refresh();
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(ProductSearchCloudFragment.class.getName());
+    }
+
     private void init() {
-        measureScreen();
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            if (bundle.containsKey("searchName")) {
+                searchName = bundle.getString("searchName");
+            }
+        }
         productAdapter = new ProductAdapter();
     }
 
     @Override
     protected void findViews() {
         refreshScrollView = (PullToRefreshScrollView) contentView
-                .findViewById(R.id.suning_product_list_scroll);
+                .findViewById(R.id.product_search_scroll);
         productGridView = (InnerGridView) contentView
-                .findViewById(R.id.suning_product_list);
-        productAreaTextView = (TextView) contentView
-                .findViewById(R.id.suning_product_area);
-        productAreaSelectButton = (LinearLayout) contentView
-                .findViewById(R.id.suning_product_area_select);
+                .findViewById(R.id.product_search_list);
         initViews();
         registerViews();
     }
 
     @Override
     protected void initViews() {
-        refreshScrollView.setMode(Mode.BOTH);
         productGridView.setAdapter(productAdapter);
+        refreshScrollView.setMode(Mode.BOTH);
     }
 
     @Override
     protected void registerViews() {
-        refreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ScrollView>() {
-            @Override
-            public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
-                refresh();
-            }
+        refreshScrollView
+                .setOnRefreshListener(new OnRefreshListener2<ScrollView>() {
 
-            @Override
-            public void onPullUpToRefresh(PullToRefreshBase<ScrollView> refreshView) {
-                getSuningProducts();
-            }
-        });
+                    @Override
+                    public void onPullDownToRefresh(
+                            PullToRefreshBase<ScrollView> refreshView) {
+                        refresh();
+                    }
+
+                    @Override
+                    public void onPullUpToRefresh(
+                            PullToRefreshBase<ScrollView> refreshView) {
+                        getSuningProducts();
+                    }
+                });
         productGridView.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
@@ -176,24 +162,6 @@ public class SuningProductFragment extends BaseNotifyFragment {
                 }
             }
         });
-        productAreaSelectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SuningAreaDialog suningAreaDialog = new SuningAreaDialog() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        super.onDismiss(dialog);
-                        if (TextUtils.isEmpty(SuningManager.getSuningAreas().getTown().getCode())) {
-                            getActivity().finish();
-                        } else {
-                            showSuningAreas();
-                            new GetSuningProvince().execute();
-                        }
-                    }
-                };
-                suningAreaDialog.show(getFragmentManager(), null);
-            }
-        });
     }
 
     private void refresh() {
@@ -208,7 +176,7 @@ public class SuningProductFragment extends BaseNotifyFragment {
         pagenum++;
         Request request = new Request();
         request.setUrl(API.API_SUNING_PRODUCT_LIST);
-        request.addRequestParam("classId", productClass.getId());
+        request.addRequestParam("name", searchName);
         request.addRequestParam("pagenum", String.valueOf(pagenum));
         request.addRequestParam("pagesize", String.valueOf(pagesize));
         MissionController.startNetworkMission(getActivity(), request, new RequestListener() {
@@ -285,7 +253,6 @@ public class SuningProductFragment extends BaseNotifyFragment {
         request.addRequestParam("data", data.toString());
 
         MissionController.startNetworkMission(getActivity(), request, new RequestListener() {
-
             @Override
             protected void onStart() {
                 showLoading();
@@ -401,26 +368,6 @@ public class SuningProductFragment extends BaseNotifyFragment {
             TextView priceTextView;
         }
 
-    }
-
-    private void showSuningAreas() {
-        StringBuilder stringBuilder = new StringBuilder();
-        if (!TextUtils.isEmpty(SuningManager.getSuningAreas().getProvince().getName())) {
-            stringBuilder.append(SuningManager.getSuningAreas().getProvince().getName());
-            if (!TextUtils.isEmpty(SuningManager.getSuningAreas().getCity().getName())) {
-                stringBuilder.append(">");
-                stringBuilder.append(SuningManager.getSuningAreas().getCity().getName());
-                if (!TextUtils.isEmpty(SuningManager.getSuningAreas().getDistrict().getName())) {
-                    stringBuilder.append(">");
-                    stringBuilder.append(SuningManager.getSuningAreas().getDistrict().getName());
-                    if (!TextUtils.isEmpty(SuningManager.getSuningAreas().getTown().getName())) {
-                        stringBuilder.append(">");
-                        stringBuilder.append(SuningManager.getSuningAreas().getTown().getName());
-                    }
-                }
-            }
-        }
-        productAreaTextView.setText(stringBuilder.toString());
     }
 
 }

@@ -28,9 +28,8 @@ import java.util.List;
 import yitgogo.smart.BaseNotifyFragment;
 import yitgogo.smart.order.model.User;
 import yitgogo.smart.order.ui.PayFragment;
-import yitgogo.smart.suning.model.API_SUNING;
 import yitgogo.smart.suning.model.GetNewSignature;
-import yitgogo.smart.suning.model.ModelProductDetail;
+import yitgogo.smart.suning.model.ModelProduct;
 import yitgogo.smart.suning.model.ModelProductPrice;
 import yitgogo.smart.suning.model.ModelSuningOrderResult;
 import yitgogo.smart.suning.model.SuningManager;
@@ -54,7 +53,7 @@ public class SuningProductBuyFragment extends BaseNotifyFragment {
 
     TextView buyButton;
 
-    ModelProductDetail productDetail = new ModelProductDetail();
+    ModelProduct productDetail = new ModelProduct();
     ModelProductPrice productPrice = new ModelProductPrice();
 
     User user;
@@ -99,7 +98,7 @@ public class SuningProductBuyFragment extends BaseNotifyFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             if (bundle.containsKey("product")) {
-                productDetail = new ModelProductDetail(new JSONObject(bundle.getString("product")));
+                productDetail = new ModelProduct(new JSONObject(bundle.getString("product")));
             }
         }
     }
@@ -480,7 +479,7 @@ public class SuningProductBuyFragment extends BaseNotifyFragment {
             }
             List<NameValuePair> nameValuePairs = new ArrayList<>();
             nameValuePairs.add(new BasicNameValuePair("data", data.toString()));
-            return MissionController.post(API_SUNING.API_PRODUCT_STOCK, nameValuePairs);
+            return MissionController.post(API.API_SUNING_PRODUCT_STOCK, nameValuePairs);
         }
 
         @Override
@@ -552,7 +551,7 @@ public class SuningProductBuyFragment extends BaseNotifyFragment {
             }
             List<NameValuePair> nameValuePairs = new ArrayList<>();
             nameValuePairs.add(new BasicNameValuePair("data", data.toString()));
-            return MissionController.post(API_SUNING.API_PRODUCT_PRICE, nameValuePairs);
+            return MissionController.post(API.API_SUNING_PRODUCT_PRICE, nameValuePairs);
         }
 
         /**

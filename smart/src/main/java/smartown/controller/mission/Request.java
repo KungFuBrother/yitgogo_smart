@@ -23,6 +23,10 @@ public class Request {
         return host;
     }
 
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public void setUrl(String host, String url) {
         this.host = host;
         this.url = url;

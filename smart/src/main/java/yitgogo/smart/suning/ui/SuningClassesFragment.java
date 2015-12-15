@@ -21,14 +21,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import smartown.controller.mission.MissionController;
+import smartown.controller.mission.MissionMessage;
+import smartown.controller.mission.Request;
+import smartown.controller.mission.RequestListener;
+import smartown.controller.mission.RequestMessage;
 import yitgogo.smart.BaseNotifyFragment;
-import yitgogo.smart.suning.model.GetNewSignature;
 import yitgogo.smart.suning.model.ModelProductClass;
-import yitgogo.smart.suning.model.SuningManager;
-import yitgogo.smart.task.SuningTask;
-import yitgogo.smart.tools.MissionMessage;
-import yitgogo.smart.tools.NetworkMissionMessage;
-import yitgogo.smart.tools.OnNetworkListener;
+import yitgogo.smart.tools.API;
 import yitgogo.smart.view.InnerListView;
 import yitgogo.smart.view.Notify;
 
@@ -63,7 +63,7 @@ public abstract class SuningClassesFragment extends BaseNotifyFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getProductClass();
+        getSuningClasses();
     }
 
     private void init() {
@@ -90,7 +90,7 @@ public abstract class SuningClassesFragment extends BaseNotifyFragment {
         refreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ScrollView>() {
             @Override
             public void onRefresh(PullToRefreshBase<ScrollView> refreshView) {
-                getProductClass();
+                getSuningClasses();
             }
         });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -109,57 +109,29 @@ public abstract class SuningClassesFragment extends BaseNotifyFragment {
 
     public abstract void onClassSelected(ModelProductClass selectedProductClass);
 
-    private void getProductClass() {
+    private void getSuningClasses() {
         productClasses.clear();
         productClassAdapter.notifyDataSetChanged();
-        SuningTask.getProductClass(getActivity(), new OnNetworkListener() {
-
+        Request request = new Request();
+        request.setUrl(API.API_SUNING_PRODUCT_CALSSES);
+        MissionController.startNetworkMission(getActivity(), request, new RequestListener() {
             @Override
-            public void onStart() {
-                super.onStart();
+            protected void onStart() {
                 showLoading();
             }
 
             @Override
-            public void onFinish() {
-                super.onFinish();
-                refreshScrollView.onRefreshComplete();
-                hideLoading();
-            }
-
-            @Override
             protected void onFail(MissionMessage missionMessage) {
-                super.onFail(missionMessage);
-                loadingEmpty();
+                loadingEmpty("获取分类数据失败");
             }
 
             @Override
-            public void onSuccess(NetworkMissionMessage message) {
-                super.onSuccess(message);
-                hideLoading();
-                if (SuningManager.isSignatureOutOfDate(message.getResult())) {
-                    GetNewSignature getNewSignature = new GetNewSignature() {
-                        @Override
-                        protected void onPreExecute() {
-                            showLoading();
-                        }
-
-                        @Override
-                        protected void onPostExecute(Boolean isSuccess) {
-                            hideLoading();
-                            if (isSuccess) {
-                                getProductClass();
-                            }
-                        }
-                    };
-                    getNewSignature.execute();
-                    return;
-                }
-                if (!TextUtils.isEmpty(message.getResult())) {
+            protected void onSuccess(RequestMessage requestMessage) {
+                if (!TextUtils.isEmpty(requestMessage.getResult())) {
                     try {
-                        JSONObject object = new JSONObject(message.getResult());
-                        if (object.optBoolean("isSuccess")) {
-                            JSONArray array = object.optJSONArray("result");
+                        JSONObject object = new JSONObject(requestMessage.getResult());
+                        if (object.optString("state").equalsIgnoreCase("SUCCESS")) {
+                            JSONArray array = object.optJSONArray("dataList");
                             if (array != null) {
                                 for (int i = 0; i < array.length(); i++) {
                                     productClasses.add(new ModelProductClass(array.optJSONObject(i)));
@@ -170,11 +142,17 @@ public abstract class SuningClassesFragment extends BaseNotifyFragment {
                             }
                             return;
                         }
-                        Notify.show(object.optString("returnMsg"));
+                        Notify.show(object.optString("message"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
+            }
+
+            @Override
+            protected void onFinish() {
+                hideLoading();
+                refreshScrollView.onRefreshComplete();
             }
         });
     }
@@ -212,15 +190,12 @@ public abstract class SuningClassesFragment extends BaseNotifyFragment {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
             viewHolder.className.setText(productClasses.get(position).getName());
-            if (productClasses.get(position).getCategoryId().equals(selectedProductClass.getCategoryId())) {
-                viewHolder.selector
-                        .setBackgroundResource(R.color.textColorCompany);
-                viewHolder.className.setTextColor(getResources()
-                        .getColor(R.color.textColorCompany));
+            if (productClasses.get(position).getId().equals(selectedProductClass.getId())) {
+                viewHolder.selector.setBackgroundResource(R.color.textColorCompany);
+                viewHolder.className.setTextColor(getResources().getColor(R.color.textColorCompany));
             } else {
                 viewHolder.selector.setBackgroundResource(android.R.color.transparent);
-                viewHolder.className.setTextColor(getResources()
-                        .getColor(R.color.textColorSecond));
+                viewHolder.className.setTextColor(getResources().getColor(R.color.textColorSecond));
             }
             return convertView;
         }

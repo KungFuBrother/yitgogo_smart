@@ -269,7 +269,6 @@ public class ProductDetailFragment extends BaseNotifyFragment {
                 } else {
                     Notify.show("库存不足");
                 }
-                buyCount++;
             }
         });
         countDeleteButton.setOnClickListener(new OnClickListener() {

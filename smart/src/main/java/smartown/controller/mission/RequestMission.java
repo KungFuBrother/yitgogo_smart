@@ -13,6 +13,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import yitgogo.smart.tools.PackageTool;
+
 public class RequestMission extends Mission {
 
 
@@ -37,10 +39,11 @@ public class RequestMission extends Mission {
             httpURLConnection.setDoOutput(true);// 设置是否向httpUrlConnection输出，因为这个是post请求，参数要放在http正文内，因此需要设为true, 默认情况下是false;
             httpURLConnection.setDoInput(true);// 设置是否从httpUrlConnection读入，默认情况下是true;
             httpURLConnection.setUseCaches(false); // Post 请求不能使用缓存
-            httpURLConnection.setRequestProperty("Content-type", "application/x-java-serialized-object");// 设定传送的内容类型是可序列化的java对象(如果不设此项,在传送序列化对象时,当WEB服务默认的不是这种类型时可能抛java.io.EOFException)
+            httpURLConnection.setRequestProperty("Content-type", "application/x-www-form-urlencoded");//表单参数类型
             httpURLConnection.setRequestMethod("POST");// 设定请求的方法为"POST"，默认是GET
             httpURLConnection.setConnectTimeout(5000);//连接超时 单位毫秒
             httpURLConnection.setReadTimeout(5000);//读取超时 单位毫秒
+            httpURLConnection.setRequestProperty("version", PackageTool.getVersionName());
             if (request.isUseCookie()) {
                 httpURLConnection.setRequestProperty("Cookie", CookieController.getCookie(request.getHost()));
             }
@@ -58,8 +61,11 @@ public class RequestMission extends Mission {
                     return;
                 }
                 Log.i("Request", "parameters:" + stringBuffer);
+                httpURLConnection.setFixedLengthStreamingMode(stringBuffer.toString().getBytes().length);//请求长度
                 OutputStream outputStream = httpURLConnection.getOutputStream();// 此处getOutputStream会隐含的进行connect(即：如同调用上面的connect()方法，所以在开发中不调用上述的connect()也可以)。
                 outputStream.write(stringBuffer.toString().getBytes());
+                outputStream.flush();
+                outputStream.close();
             }
             if (isCanceled()) {
                 return;
@@ -111,6 +117,8 @@ public class RequestMission extends Mission {
                 return;
             }
             requestListener.sendMessage(new MissionMessage(MissionListener.PROGRESS_FAILED, e.getMessage()));
+        } finally {
+            httpURLConnection.disconnect();
         }
     }
 

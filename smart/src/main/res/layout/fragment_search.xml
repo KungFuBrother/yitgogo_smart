@@ -90,6 +90,23 @@
                     android:text="本地服务"
                     android:textColor="@drawable/selector_text"
                     android:textSize="16px" />
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="16px"
+                    android:background="@color/divider" />
+
+                <RadioButton
+                    android:id="@+id/search_type_cloud"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_trans_divider"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="云商城"
+                    android:textColor="@drawable/selector_text"
+                    android:textSize="16px" />
             </RadioGroup>
         </LinearLayout>
 

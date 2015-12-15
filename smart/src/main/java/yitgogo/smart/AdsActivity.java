@@ -30,13 +30,17 @@ public class AdsActivity extends Activity {
 
     int count = 0;
 
+    boolean isAlive = false;
+
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 0) {
                 ImageLoader.getInstance().displayImage(adsImages.get(count % adsImages.size()).getAdverImg(), imageView);
                 count++;
-                handler.sendEmptyMessageDelayed(0, 10000);
+                if (isAlive) {
+                    handler.sendEmptyMessageDelayed(0, 10000);
+                }
             }
         }
     };
@@ -44,6 +48,7 @@ public class AdsActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isAlive = true;
         setContentView(R.layout.fragment_ads);
         for (int i = 0; i < adses.size(); i++) {
             if (adses.get(i).getAdsImages().isEmpty()) {
@@ -70,6 +75,7 @@ public class AdsActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
+        isAlive = false;
         MobclickAgent.onPause(this);
         MobclickAgent.onPageEnd(AdsActivity.class.getName());
     }

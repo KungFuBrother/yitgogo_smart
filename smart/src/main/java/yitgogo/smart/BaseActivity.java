@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import smartown.controller.mission.MissionController;
 import yitgogo.smart.tools.LogUtil;
 
 public class BaseActivity extends FragmentActivity {
@@ -39,6 +40,13 @@ public class BaseActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
+    }
+
+    @Override
+    protected void onDestroy() {
+        MissionController.cancelMissions(this);
+        yitgogo.smart.tools.MissionController.cancelMissions(this);
+        super.onDestroy();
     }
 
     @Override
