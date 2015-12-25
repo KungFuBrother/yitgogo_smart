@@ -27,7 +27,7 @@ public class ModelLocalSaleMiaoshaDetail {
 	String startTime = "", seckillName = "", id = "", productDetais = "",
 			attribute = "", number = "", productName = "", spNo = "",
 			spId = "";
-	int memberNumber = 0, numbers = 0;
+	int memberNumber = 0,seckillNUmber=0, numbers = 0;
 	double price = 0, seckillPrice = 0;
 	JSONObject jsonObject = new JSONObject();
 	List<ModelLocalServiceImage> images = new ArrayList<ModelLocalServiceImage>();
@@ -73,6 +73,11 @@ public class ModelLocalSaleMiaoshaDetail {
 			if (object.has("memberNumber")) {
 				if (!object.optString("memberNumber").equalsIgnoreCase("null")) {
 					memberNumber = object.optInt("memberNumber");
+				}
+			}
+			if (object.has("seckillNUmber")) {
+				if (!object.optString("seckillNUmber").equalsIgnoreCase("null")) {
+					seckillNUmber = object.optInt("seckillNUmber");
 				}
 			}
 			if (object.has("numbers")) {
@@ -143,6 +148,10 @@ public class ModelLocalSaleMiaoshaDetail {
 
 	public int getMemberNumber() {
 		return memberNumber;
+	}
+
+	public int getSeckillNUmber() {
+		return seckillNUmber;
 	}
 
 	public int getNumbers() {

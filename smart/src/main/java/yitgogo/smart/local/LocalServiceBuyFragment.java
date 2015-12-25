@@ -331,7 +331,7 @@ public class LocalServiceBuyFragment extends BaseNotifyFragment {
     private void buyLocalService() {
         OrderTask.buyLocalService(getActivity(), user.getUseraccount(),
                 userNameEditText.getText().toString(), userPhoneEditText
-                        .getText().toString(), machineArea.getAddress(), userAddressEditText.getText().toString(),
+                        .getText().toString(), machineArea.getAddress(), userAreaTextView.getText().toString() + userAddressEditText.getText().toString(),
                 service.getProductType(), totalMoney, service.getId(),
                 buyCount,
                 diliverPaymentFragment.getSelectedDiliver(),

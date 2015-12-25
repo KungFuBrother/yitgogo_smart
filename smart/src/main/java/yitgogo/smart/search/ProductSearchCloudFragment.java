@@ -179,7 +179,7 @@ public class ProductSearchCloudFragment extends BaseNotifyFragment {
         request.addRequestParam("name", searchName);
         request.addRequestParam("pagenum", String.valueOf(pagenum));
         request.addRequestParam("pagesize", String.valueOf(pagesize));
-        MissionController.startNetworkMission(getActivity(), request, new RequestListener() {
+        MissionController.startRequestMission(getActivity(), request, new RequestListener() {
             @Override
             protected void onStart() {
                 showLoading();
@@ -252,7 +252,7 @@ public class ProductSearchCloudFragment extends BaseNotifyFragment {
         }
         request.addRequestParam("data", data.toString());
 
-        MissionController.startNetworkMission(getActivity(), request, new RequestListener() {
+        MissionController.startRequestMission(getActivity(), request, new RequestListener() {
             @Override
             protected void onStart() {
                 showLoading();

@@ -339,7 +339,7 @@ public class ProductScoreBuyFragment extends BaseNotifyFragment {
     private void buyScoreProduct() {
         buyProduct(getActivity(), user.getUseraccount(),
                 userNameEditText.getText().toString(), userPhoneEditText
-                        .getText().toString(), userAddressEditText.getText()
+                        .getText().toString(), userAreaTextView.getText().toString() + userAddressEditText.getText()
                         .toString(), totalMoney, productDetail.getProductId(),
                 buyCount, productDetail.getJifenjia(), 1,
                 new OnNetworkListener() {

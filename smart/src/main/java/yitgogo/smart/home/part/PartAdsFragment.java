@@ -19,7 +19,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import yitgogo.smart.AdsActivity;
 import yitgogo.smart.BaseNormalFragment;
 import yitgogo.smart.home.model.ModelAds;
 import yitgogo.smart.view.AutoScrollViewPager;
@@ -81,7 +80,6 @@ public class PartAdsFragment extends BaseNormalFragment {
     public void refresh(String result) {
         ads.clear();
         adsAdapter.notifyDataSetChanged();
-        AdsActivity.adses=new ArrayList<>();
         if (result.length() > 0) {
             JSONObject object;
             try {
@@ -93,8 +91,6 @@ public class PartAdsFragment extends BaseNormalFragment {
                             ModelAds ad = new ModelAds(array.getJSONObject(i));
                             if (ad.getAdverPosition().equals("头部广告")) {
                                 ads.add(ad);
-                            } else if (ad.getAdverPosition().equals("全屏广告")) {
-                                AdsActivity.adses.add(ad);
                             }
                         }
                         adsAdapter.notifyDataSetChanged();

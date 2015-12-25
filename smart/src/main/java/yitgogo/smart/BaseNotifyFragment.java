@@ -280,8 +280,7 @@ public class BaseNotifyFragment extends Fragment {
      * @return
      */
     protected boolean isConnected() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity()
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager.getActiveNetworkInfo() != null) {
             if (connectivityManager.getActiveNetworkInfo().isAvailable()) {
                 return true;

@@ -7,28 +7,20 @@ import java.util.List;
 
 public class Request {
 
-    boolean saveCookie = false;
-    boolean useCookie = false;
+    public final static String REQUEST_TYPE_POST = "POST";
+    public final static String REQUEST_TYPE_GET = "GET";
 
-    String host = "";
-    String url = "";
-
-    List<RequestParam> requestParams = new ArrayList<>();
+    private String url = "";
+    private List<RequestParam> requestParams = new ArrayList<>();
+    private boolean saveCookie = false;
+    private boolean useCookie = false;
+    private String requestType = REQUEST_TYPE_POST;
 
     public String getUrl() {
         return url;
     }
 
-    public String getHost() {
-        return host;
-    }
-
     public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public void setUrl(String host, String url) {
-        this.host = host;
         this.url = url;
     }
 
@@ -48,12 +40,16 @@ public class Request {
         this.saveCookie = saveCookie;
     }
 
-    public List<RequestParam> getRequestParams() {
-        return requestParams;
+    public String getRequestType() {
+        return requestType;
     }
 
-    public void setRequestParams(List<RequestParam> requestParams) {
-        this.requestParams = requestParams;
+    public void setRequestType(String requestType) {
+        this.requestType = requestType;
+    }
+
+    public List<RequestParam> getRequestParams() {
+        return requestParams;
     }
 
     public void addRequestParam(String key, String value) {
@@ -61,6 +57,12 @@ public class Request {
             return;
         }
         requestParams.add(new RequestParam(key, value));
+    }
+
+    public void addRequestParam(List<RequestParam> params) {
+        if (params != null) {
+            requestParams.addAll(params);
+        }
     }
 
 }

@@ -114,7 +114,7 @@ public abstract class SuningClassesFragment extends BaseNotifyFragment {
         productClassAdapter.notifyDataSetChanged();
         Request request = new Request();
         request.setUrl(API.API_SUNING_PRODUCT_CALSSES);
-        MissionController.startNetworkMission(getActivity(), request, new RequestListener() {
+        MissionController.startRequestMission(getActivity(), request, new RequestListener() {
             @Override
             protected void onStart() {
                 showLoading();

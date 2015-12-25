@@ -52,6 +52,10 @@
             android:name="yitgogo.smart.AlertDialogActivity"
             android:theme="@style/dialog_activity"
             android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+        <activity
+            android:name="yitgogo.smart.print.PrintDialogActivity"
+            android:theme="@style/dialog_activity"
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
 
         <receiver android:name="yitgogo.smart.AutoBootReceiver">
             <intent-filter>

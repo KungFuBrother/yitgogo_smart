@@ -7,10 +7,10 @@ public abstract class Mission implements Runnable {
     @Override
     public void run() {
         start();
-        cacel();
+        cancel();
     }
 
-    public void cacel() {
+    public void cancel() {
         isCanceled = true;
     }
 

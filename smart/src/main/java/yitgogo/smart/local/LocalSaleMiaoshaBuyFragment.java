@@ -20,6 +20,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import smartown.controller.mission.MissionController;
+import smartown.controller.mission.MissionMessage;
+import smartown.controller.mission.Request;
+import smartown.controller.mission.RequestListener;
+import smartown.controller.mission.RequestMessage;
 import yitgogo.smart.BaseNotifyFragment;
 import yitgogo.smart.local.model.ModelLocalSaleMiaoshaDetail;
 import yitgogo.smart.model.ModelMachineArea;
@@ -31,6 +36,7 @@ import yitgogo.smart.order.ui.OrderDiliverPaymentFragment;
 import yitgogo.smart.order.ui.PayFragment;
 import yitgogo.smart.task.OrderTask;
 import yitgogo.smart.task.ProductTask;
+import yitgogo.smart.tools.API;
 import yitgogo.smart.tools.NetworkMissionMessage;
 import yitgogo.smart.tools.OnNetworkListener;
 import yitgogo.smart.tools.Parameters;
@@ -52,7 +58,9 @@ public class LocalSaleMiaoshaBuyFragment extends BaseNotifyFragment {
     ModelMachineArea machineArea = new ModelMachineArea();
 
     double totalMoney = 0;
-    int buyCount = 1;
+    private int buyCount = 1;
+
+    private int boughtCount = 0;
 
     ModelStorePostInfo storePostInfo = new ModelStorePostInfo();
     OrderDiliverPaymentFragment diliverPaymentFragment = new OrderDiliverPaymentFragment() {
@@ -253,11 +261,7 @@ public class LocalSaleMiaoshaBuyFragment extends BaseNotifyFragment {
                 Notify.show("请填写收货地址");
             } else {
                 if (user.isLogin()) {
-                    try {
-                        buyLocalGoods();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    getBoughtCount(user.getUseraccount());
                 } else {
                     registerUser();
                 }
@@ -289,8 +293,7 @@ public class LocalSaleMiaoshaBuyFragment extends BaseNotifyFragment {
                             JSONObject object;
                             try {
                                 object = new JSONObject(message.getResult());
-                                if (object.optString("state").equalsIgnoreCase(
-                                        "SUCCESS")) {
+                                if (object.optString("state").equalsIgnoreCase("SUCCESS")) {
                                     getUserInfo(false);
                                     return;
                                 }
@@ -305,8 +308,7 @@ public class LocalSaleMiaoshaBuyFragment extends BaseNotifyFragment {
 
     private void getUserInfo(boolean show) {
         final boolean showUserInfo = show;
-        OrderTask.getUserInfo(getActivity(), userPhoneEditText.getText()
-                .toString(), new OnNetworkListener() {
+        OrderTask.getUserInfo(getActivity(), userPhoneEditText.getText().toString(), new OnNetworkListener() {
 
             @Override
             public void onStart() {
@@ -340,7 +342,7 @@ public class LocalSaleMiaoshaBuyFragment extends BaseNotifyFragment {
                                 showUserInfo();
                             } else {
                                 if (user.isLogin()) {
-                                    buyLocalGoods();
+                                    getBoughtCount(user.getUseraccount());
                                 }
                             }
                         }
@@ -361,13 +363,15 @@ public class LocalSaleMiaoshaBuyFragment extends BaseNotifyFragment {
 
     private void buyLocalGoods() throws JSONException {
         OrderTask.buyLocalGoods(getActivity(), user.getUseraccount(),
-                userNameEditText.getText().toString(), userPhoneEditText
-                        .getText().toString(), userAddressEditText.getText()
-                        .toString(), diliverPaymentFragment
-                        .getSelectedDiliver(), diliverPaymentFragment
-                        .getSelectedPayment(),
-                localSaleMiaoshaDetail.getSpId(), machineArea.getAddress(),
-                totalMoney, localSaleMiaoshaDetail.getId(), buyCount,
+                userNameEditText.getText().toString(), userPhoneEditText.getText().toString(),
+                userAreaTextView.getText().toString() + userAddressEditText.getText().toString(),
+                diliverPaymentFragment.getSelectedDiliver(),
+                diliverPaymentFragment.getSelectedPayment(),
+                localSaleMiaoshaDetail.getSpId(),
+                machineArea.getAddress(),
+                totalMoney,
+                localSaleMiaoshaDetail.getId(),
+                buyCount,
                 localSaleMiaoshaDetail.getSeckillPrice(), 1,
                 new OnNetworkListener() {
 
@@ -523,6 +527,73 @@ public class LocalSaleMiaoshaBuyFragment extends BaseNotifyFragment {
                     }
 
                 });
+    }
+
+    /**
+     * 查询已购数量
+     */
+    private void getBoughtCount(String memberAccount) {
+        Request request = new Request();
+        request.setUrl(API.API_LOCAL_SALE_MIAOSHA_COUNT);
+        request.addRequestParam("memberAccount", memberAccount);
+        request.addRequestParam("productId", localSaleMiaoshaDetail.getId());
+        request.addRequestParam("spId", localSaleMiaoshaDetail.getSpId());
+        MissionController.startRequestMission(getActivity(), request, new RequestListener() {
+            @Override
+            protected void onStart() {
+                showLoading();
+            }
+
+            @Override
+            protected void onFail(MissionMessage missionMessage) {
+                Notify.show(missionMessage.getMessage());
+            }
+
+            @Override
+            protected void onSuccess(RequestMessage requestMessage) {
+                if (!TextUtils.isEmpty(requestMessage.getResult())) {
+                    JSONObject object;
+                    try {
+                        object = new JSONObject(requestMessage.getResult());
+                        if (object.optString("state").equalsIgnoreCase("SUCCESS")) {
+                            boughtCount = object.optInt("object");
+                            confirmOrder();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            protected void onFinish() {
+                hideLoading();
+            }
+        });
+    }
+
+    private void confirmOrder() throws JSONException {
+        if (totalMoney > 0) {
+            if (localSaleMiaoshaDetail.getNumbers() >= buyCount) {
+                if (localSaleMiaoshaDetail.getSeckillNUmber() >= buyCount) {
+                    if (buyCount + boughtCount > localSaleMiaoshaDetail.getMemberNumber()) {
+                        String toastString = "每个账号限购" + localSaleMiaoshaDetail.getMemberNumber() + "件";
+                        if (boughtCount > 0) {
+                            toastString += "，您已购买过" + boughtCount + "件";
+                        }
+                        Notify.show(toastString);
+                    } else {
+                        buyLocalGoods();
+                    }
+                } else {
+                    Notify.show("商品库存不足");
+                }
+            } else {
+                Notify.show("商品库存不足");
+            }
+        } else {
+            Notify.show("商品信息有误");
+        }
     }
 
 }

@@ -283,7 +283,7 @@ public class LocalCarBuyFragment extends BaseNotifyFragment {
                     .getDiliver().getName());
             switch (localCars.get(i).getDiliver().getType()) {
                 case ModelDiliver.TYPE_HOME:
-                    deliveryInfoObject.put("address", userAddressEditText.getText()
+                    deliveryInfoObject.put("address", userAreaTextView.getText().toString() + userAddressEditText.getText()
                             .toString());
                     break;
                 case ModelDiliver.TYPE_SELF:

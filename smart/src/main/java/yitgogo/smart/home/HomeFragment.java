@@ -59,7 +59,6 @@ import yitgogo.smart.home.part.PartStoreFragment;
 import yitgogo.smart.home.part.PartTejiaFragment;
 import yitgogo.smart.home.part.PartThemeFragment;
 import yitgogo.smart.local.NongfuFragment;
-import yitgogo.smart.model.ModelMachineArea;
 import yitgogo.smart.print.PrintService;
 import yitgogo.smart.search.ProductSearchFragment;
 import yitgogo.smart.suning.ui.SuningProductFragment;
@@ -168,8 +167,7 @@ public class HomeFragment extends BaseNotifyFragment {
 
     @Override
     public void onDestroy() {
-        getActivity()
-                .stopService(new Intent(getActivity(), PrintService.class));
+        getActivity().stopService(new Intent(getActivity(), PrintService.class));
         updateVersionInfo("OFFLINE");
         super.onDestroy();
     }
@@ -180,7 +178,6 @@ public class HomeFragment extends BaseNotifyFragment {
         priceMap = new HashMap<>();
         productAdapter = new ProductAdapter();
         updateVersionInfo("ONLINE");
-        getMachineArea();
     }
 
     @Override
@@ -688,52 +685,5 @@ public class HomeFragment extends BaseNotifyFragment {
             TextView priceTextView, nameTextView;
         }
     }
-
-
-    private void getMachineArea() {
-        ProductTask.getMachineArea(getActivity(), new OnNetworkListener() {
-
-            @Override
-            public void onStart() {
-                super.onStart();
-                showLoading();
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                hideLoading();
-            }
-
-            @Override
-            public void onSuccess(NetworkMissionMessage message) {
-                super.onSuccess(message);
-                if (!TextUtils.isEmpty(message.getResult())) {
-                    JSONObject object;
-                    try {
-                        object = new JSONObject(message.getResult());
-                        if (object.optString("state").equalsIgnoreCase(
-                                "SUCCESS")) {
-                            JSONObject dataMap = object
-                                    .optJSONObject("dataMap");
-                            if (dataMap != null) {
-                                ModelMachineArea machineArea = new ModelMachineArea(dataMap);
-                                Device.setMachineArea(machineArea);
-                            }
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (isConnected()) {
-                    if (TextUtils.isEmpty(Device.getMachineArea().getId())) {
-                        getMachineArea();
-                    }
-                }
-            }
-
-        });
-    }
-
 
 }

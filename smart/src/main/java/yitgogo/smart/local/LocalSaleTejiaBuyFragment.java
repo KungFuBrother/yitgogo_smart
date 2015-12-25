@@ -358,7 +358,7 @@ public class LocalSaleTejiaBuyFragment extends BaseNotifyFragment {
     private void buyLocalGoods() throws JSONException {
         OrderTask.buyLocalGoods(getActivity(), user.getUseraccount(),
                 userNameEditText.getText().toString(), userPhoneEditText
-                        .getText().toString(), userAddressEditText.getText()
+                        .getText().toString(), userAreaTextView.getText().toString() + userAddressEditText.getText()
                         .toString(), diliverPaymentFragment
                         .getSelectedDiliver(), diliverPaymentFragment
                         .getSelectedPayment(), localSaleTejiaDetail.getSpId(),

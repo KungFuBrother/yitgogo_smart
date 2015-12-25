@@ -10,6 +10,7 @@ public interface API {
 
     String IP_PUBLIC = "http://yitos.net";
     //    String IP_PUBLIC = "http://192.168.8.8:8050";
+    //    String IP_PUBLIC = "http://192.168.8.8:9001";
     String IP_SUNING = "http://gcapi.suning.com";
 //    String IP_SUNING = "http://58.240.86.161";
 
@@ -21,7 +22,7 @@ public interface API {
     /**
      * 说明：根据手机号码和面值（为慢充时还须到账时间）查询充值信息 参数： phoneno 手机号码 必须 pervalue 面值 必须
      * 快充可选面值（1、2、5、10、20、30、50、100、300、500） 慢充可选面值（30、50、100）
-     * <p>
+     * <p/>
      * mctype 慢充到账时间 慢充才传 0.5（半小时到账）、4（4小时到账）、12（12小时到账）、
      * 24（24小时到账）、48（48小时到账）、72（72小时到账） 默认为24
      */
@@ -35,11 +36,11 @@ public interface API {
 
     /**
      * 说明：根据固话号码，面值，运营商，充值类型查询充值信息 参数： phoneno 固话/宽带号码 必须 格式：021-88888888
-     * <p>
+     * <p/>
      * pervalue 面值 必须 电信：10、20、30、50、100、300 联通：50、100
-     * <p>
+     * <p/>
      * teltype 运营商 必须 1、电信 2、联通（默认选中1）
-     * <p>
+     * <p/>
      * chargeType 充值类型 必须 1：固话；2：宽带（默认选中1）
      */
     String API_BIANMIN_TELEPHONE_CHARGE_INFO = IP_PUBLIC
@@ -163,18 +164,18 @@ public interface API {
             + "/api/product/promotionManage/promotionTheme/findPromotionclass";
     /**
      * 获取全部的品牌信息
-     * <p>
+     * <p/>
      * 参数：无
-     * <p>
+     * <p/>
      * 返回结果：{brandLogo:LoGo图片,brandName:品牌名称,brandId:品牌ID}
      */
     String API_HOME_BRAND = IP_PUBLIC
             + "/api/MobileArea/MobileManager/brand/MobileAreaBrandInit";
     /**
      * 获取全部的推荐分类信息
-     * <p>
+     * <p/>
      * 参数：无
-     * <p>
+     * <p/>
      * 返回结果：{classLogo:LoGo图片,className:分类名称,ClassId:品牌ID}
      */
     String API_HOME_CLASS = IP_PUBLIC
@@ -371,7 +372,7 @@ public interface API {
 
     /**
      * 本地产品详情
-     * <p>
+     * <p/>
      * String retailProductManagerID
      */
     String API_LOCAL_BUSINESS_GOODS_DETAIL = IP_PUBLIC
@@ -379,14 +380,14 @@ public interface API {
 
     /**
      * 本地产品大分类
-     * <p>
+     * <p/>
      * serviceProviderID
      */
     String API_LOCAL_BUSINESS_GOODS_CLASS_PRIMARY = IP_PUBLIC
             + "/api/localEBusiness/retail/productClassType/queryRPBigClassType";
     /**
      * 本地产品小分类
-     * <p>
+     * <p/>
      * productTypeValueID
      */
     String API_LOCAL_BUSINESS_GOODS_CLASS_SECOND = IP_PUBLIC
@@ -440,28 +441,28 @@ public interface API {
             + "/api/localService/productManage/localProduct/findByIdOpenLocalProduct";
     /**
      * 本地促销-特价
-     * <p>
+     * <p/>
      * 传递参数: jqm 机器码
      */
     String API_LOCAL_SALE_TEJIA = IP_PUBLIC
             + "/api/product/promotionManage/LocalPromotion/findShopPromotionJQM";
     /**
      * 本地促销-特价详情
-     * <p>
+     * <p/>
      * 传递参数 : id 促销ID
      */
     String API_LOCAL_SALE_TEJIA_DETAIL = IP_PUBLIC
             + "/api/product/promotionManage/LocalPromotion/findShopPromotionId";
     /**
      * 本地促销-秒杀
-     * <p>
+     * <p/>
      * 传递参数: jqm 机器码
      */
     String API_LOCAL_SALE_MIAOSHA = IP_PUBLIC
             + "/api/product/promotionManage/LocalPromotion/findSpikePromotionJQM";
     /**
      * 本地促销-秒杀详情
-     * <p>
+     * <p/>
      * 传递参数 : id 促销ID
      */
     String API_LOCAL_SALE_MIAOSHA_DETAIL = IP_PUBLIC
@@ -510,7 +511,7 @@ public interface API {
 
     /**
      * 查询秒杀商品
-     * <p>
+     * <p/>
      * strno
      */
     String API_SALE_MIAOSHA = IP_PUBLIC
@@ -524,7 +525,7 @@ public interface API {
 
     /**
      * 查询特价商品
-     * <p>
+     * <p/>
      * strno
      */
     String API_SALE_TEJIA = IP_PUBLIC
@@ -541,7 +542,7 @@ public interface API {
 
     /**
      * 查询主题活动
-     * <p>
+     * <p/>
      * strno
      */
     String API_SALE_ACTIVITY = IP_PUBLIC
@@ -597,6 +598,8 @@ public interface API {
     String API_MACHINE_UPDATE_STATE = IP_PUBLIC
             + "/api/agency/mechanismManage/equipment/updateStatus";
 
+    String API_LOCAL_SALE_MIAOSHA_COUNT = IP_PUBLIC
+            + "/api/order/otherOrder/LocalSpikePurchaseApi/queryRetailOrder";
     /**
      * 传机构编号：no
      */

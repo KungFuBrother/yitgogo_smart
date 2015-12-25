@@ -299,7 +299,7 @@ public class ProductPlatformBuyFragment extends BaseNotifyFragment {
         networkContent.addParameters("userNumber", user.getUseraccount());
         networkContent.addParameters("customerName", userNameEditText.getText().toString());
         networkContent.addParameters("phone", userPhoneEditText.getText().toString());
-        networkContent.addParameters("shippingaddress", userAddressEditText.getText().toString());
+        networkContent.addParameters("shippingaddress", userAreaTextView.getText().toString() + userAddressEditText.getText().toString());
         networkContent.addParameters("totalMoney", decimalFormat.format(buyCount * price));
         try {
 
