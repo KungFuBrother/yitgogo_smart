@@ -2,7 +2,6 @@ package smartown.controller.mission;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,6 +21,7 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import yitgogo.smart.tools.LogUtil;
 import yitgogo.smart.tools.PackageTool;
 
 public class MissionController {
@@ -73,7 +73,7 @@ public class MissionController {
 
     public static String request(Request request) {
         try {
-            Log.i("Request", "url:" + request.getUrl());
+            LogUtil.logInfo("Request", "url:" + request.getUrl());
             URL url = new URL(request.getUrl());
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setDoOutput(true);// 设置是否向httpUrlConnection输出，因为这个是post请求，参数要放在http正文内，因此需要设为true, 默认情况下是false;
@@ -94,7 +94,7 @@ public class MissionController {
                     stringBuffer.append("=");
                     stringBuffer.append(request.getRequestParams().get(i).getValue());
                 }
-                Log.i("Request", "parameters:" + stringBuffer);
+                LogUtil.logInfo("Request", "parameters:" + stringBuffer);
                 httpURLConnection.setFixedLengthStreamingMode(stringBuffer.toString().getBytes().length);//请求长度
                 OutputStream outputStream = httpURLConnection.getOutputStream();// 此处getOutputStream会隐含的进行connect(即：如同调用上面的connect()方法，所以在开发中不调用上述的connect()也可以)。
                 outputStream.write(stringBuffer.toString().getBytes());
@@ -113,7 +113,7 @@ public class MissionController {
                 bufferedReader.close();
                 inputStream.close();
                 if (!TextUtils.isEmpty(stringBuilder.toString())) {
-                    Log.i("Request", "result:" + stringBuilder.toString());
+                    LogUtil.logInfo("Request", "result:" + stringBuilder.toString());
                     return stringBuilder.toString();
                 }
             }
@@ -127,7 +127,7 @@ public class MissionController {
 
     public static String get(Request request) {
         try {
-            Log.i("Request", "url:" + request.getUrl());
+            LogUtil.logInfo("Request", "url:" + request.getUrl());
             StringBuilder paramStringBuilder = new StringBuilder();
             if (!request.getRequestParams().isEmpty()) {
                 paramStringBuilder.append("?");
@@ -139,7 +139,7 @@ public class MissionController {
                     paramStringBuilder.append("=");
                     paramStringBuilder.append(request.getRequestParams().get(i).getValue());
                 }
-                Log.i("Request", "parameters:" + paramStringBuilder.toString());
+                LogUtil.logInfo("Request", "parameters:" + paramStringBuilder.toString());
             }
             URL url = new URL(request.getUrl() + paramStringBuilder.toString());
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -159,7 +159,7 @@ public class MissionController {
                 bufferedReader.close();
                 inputStream.close();
                 if (!TextUtils.isEmpty(stringBuilder.toString())) {
-                    Log.i("Request", "result:" + stringBuilder.toString());
+                    LogUtil.logInfo("Request", "result:" + stringBuilder.toString());
                     return stringBuilder.toString();
                 }
             } else {

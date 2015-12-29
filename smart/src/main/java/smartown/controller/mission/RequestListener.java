@@ -1,6 +1,6 @@
 package smartown.controller.mission;
 
-import android.util.Log;
+import yitgogo.smart.tools.LogUtil;
 
 public abstract class RequestListener extends MissionListener {
 
@@ -19,31 +19,31 @@ public abstract class RequestListener extends MissionListener {
 
     @Override
     protected void onMissionStart() {
-        Log.i("Request", "onMissionStart");
+        LogUtil.logInfo("Request", "onMissionStart");
         onStart();
     }
 
     @Override
     protected void onMissionCache(MissionMessage missionMessage) {
-        Log.i("Request", "onMissionCache " + (RequestMessage) missionMessage);
+        LogUtil.logInfo("Request", "onMissionCache " + missionMessage);
         onCache((RequestMessage) missionMessage);
     }
 
     @Override
     protected void onMissionFail(MissionMessage missionMessage) {
-        Log.i("Request", "onMissionFail " + missionMessage);
+        LogUtil.logInfo("Request", "onMissionFail " + missionMessage);
         onFail(missionMessage);
     }
 
     @Override
     protected void onMissionSuccess(MissionMessage missionMessage) {
-        Log.i("Request", "onMissionSuccess " + (RequestMessage) missionMessage);
+        LogUtil.logInfo("Request", "onMissionSuccess " + missionMessage);
         onSuccess((RequestMessage) missionMessage);
     }
 
     @Override
     protected void onMissionFinish() {
-        Log.i("Request", "onMissionFinish");
+        LogUtil.logInfo("Request", "onMissionFinish");
         onFinish();
     }
 }

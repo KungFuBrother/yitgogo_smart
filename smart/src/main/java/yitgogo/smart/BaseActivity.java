@@ -98,8 +98,7 @@ public class BaseActivity extends FragmentActivity {
         startActivity(intent);
     }
 
-    protected void openWindow(String fragmentName, String title,
-                              Bundle parameters) {
+    protected void openWindow(String fragmentName, String title, Bundle parameters) {
         Intent intent = new Intent(BaseActivity.this, DialogActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("fragmentName", fragmentName);
@@ -109,25 +108,6 @@ public class BaseActivity extends FragmentActivity {
         }
         intent.putExtras(bundle);
         startActivity(intent);
-    }
-
-    protected void openDialog(String fragmentName, String title,
-                              Bundle parameters) {
-        Intent intent = new Intent(BaseActivity.this, AlertDialogActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("fragmentName", fragmentName);
-        bundle.putString("title", title);
-        if (parameters != null) {
-            bundle.putBundle("parameters", parameters);
-        }
-        intent.putExtras(bundle);
-        startActivity(intent);
-    }
-
-    protected void alert(String titleString, String alertString) {
-        Bundle bundle = new Bundle();
-        bundle.putString("alertString", alertString);
-        openDialog(AlertDialogFragment.class.getName(), titleString, bundle);
     }
 
     public void neverShowAds() {

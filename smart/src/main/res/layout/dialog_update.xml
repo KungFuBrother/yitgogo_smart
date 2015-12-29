@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16px">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12px">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4px"
+                    android:text="最新版本:"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="18px" />
+
+                <TextView
+                    android:id="@+id/update_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4px"
+                    android:textColor="@color/textColorSecond"
+                    android:textSize="16px" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12px">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4px"
+                    android:text="更新内容:"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="18px" />
+
+                <TextView
+                    android:id="@+id/update_log"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4px"
+                    android:textColor="@color/textColorSecond"
+                    android:textSize="16px" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider"></View>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16px">
+
+        <LinearLayout
+            android:id="@+id/update_progress_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16px"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="下载中..."
+                    android:textColor="@color/textColorSecond"
+                    android:textSize="16px" />
+
+                <TextView
+                    android:id="@+id/update_progress_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_primary"
+                    android:textSize="16px" />
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/update_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="8px"
+                android:indeterminate="false" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/update_message_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="8px"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/update_message"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_margin="8px"
+                android:layout_weight="1"
+                android:textColor="@color/textColorSecond"
+                android:textSize="16px" />
+
+            <Button
+                android:id="@+id/update_message_button"
+                android:layout_width="wrap_content"
+                android:layout_height="48px"
+                android:layout_margin="8px"
+                android:background="@drawable/button_rec_blue"
+                android:gravity="center"
+                android:minWidth="96px"
+                android:paddingLeft="16px"
+                android:paddingRight="16px"
+                android:textColor="@color/white"
+                android:textSize="16px" />
+
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>

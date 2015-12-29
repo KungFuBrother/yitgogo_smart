@@ -1,7 +1,13 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Yitgogo_Theme_Smart" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen">
+    <style name="Yitgogo_Theme_Smart" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/color_primary</item>
+        <!--<item name="colorPrimaryDark">@color/color_primary</item>-->
+        <item name="colorAccent">@color/color_accent</item>
+        <item name="colorControlNormal">@color/color_accent</item>
         <item name="android:windowBackground">@color/theme_background</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
     <style name="dialog_activity" parent="@style/Yitgogo_Theme_Smart">

@@ -21,4 +21,15 @@
     <color name="radical_red">#F62459</color>
     <color name="lighting_yellow">#F5AB35</color>
 
+    <color name="white_cf">#cfffffff</color>
+    <color name="background_window">#f1f1f1</color>
+    <color name="black">#ff000000</color>
+    <color name="black_cf">#cf000000</color>
+    <color name="black_9f">#9f000000</color>
+    <color name="black_6f">#6f000000</color>
+    <color name="black_20">#10000000</color>
+    <color name="black_10">#10000000</color>
+    <color name="color_accent">#ff8640</color>
+    <color name="color_primary">#ff6600</color>
+
 </resources>

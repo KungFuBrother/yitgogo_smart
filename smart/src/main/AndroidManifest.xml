@@ -49,10 +49,6 @@
             android:theme="@style/dialog_activity"
             android:windowSoftInputMode="adjustResize|stateHidden"></activity>
         <activity
-            android:name="yitgogo.smart.AlertDialogActivity"
-            android:theme="@style/dialog_activity"
-            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
-        <activity
             android:name="yitgogo.smart.print.PrintDialogActivity"
             android:theme="@style/dialog_activity"
             android:windowSoftInputMode="adjustResize|stateHidden"></activity>
@@ -74,6 +70,15 @@
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote"></service>
+
+        <!--友盟更新-->
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService"></service>
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+
     </application>
 
 </manifest>

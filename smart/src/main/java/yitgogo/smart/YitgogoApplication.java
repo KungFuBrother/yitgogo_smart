@@ -11,6 +11,7 @@ import com.nostra13.universalimageloader.utils.L;
 import com.smartown.yitgogo.smart.R;
 import com.umeng.analytics.AnalyticsConfig;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.update.UmengUpdateAgent;
 
 import smartown.controller.shoppingcart.DataBaseHelper;
 import yitgogo.smart.suning.model.SuningCarController;
@@ -84,6 +85,13 @@ public class YitgogoApplication extends Application {
         /** 设置是否对日志信息进行加密, 默认false(不加密). */
         AnalyticsConfig.enableEncrypt(true);
         MobclickAgent.setDebugMode(true);
+
+        UmengUpdateAgent.setDefault();
+        UmengUpdateAgent.setAppkey("5641576767e58e7c4b004d4e");
+        UmengUpdateAgent.setChannel("Official");
+        UmengUpdateAgent.setUpdateOnlyWifi(false);
+        UmengUpdateAgent.setUpdateAutoPopup(false);
+
     }
 
 }
