@@ -26,14 +26,6 @@ public class RequestMission extends Mission {
         this.requestListener = requestListener;
     }
 
-    @Override
-    public void cancel() {
-        super.cancel();
-        if (httpURLConnection != null) {
-            httpURLConnection.disconnect();
-        }
-    }
-
     private void post() {
         if (isCanceled()) {
             return;

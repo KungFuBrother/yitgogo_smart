@@ -88,7 +88,6 @@ public class YitgogoApplication extends Application {
 
         UmengUpdateAgent.setDefault();
         UmengUpdateAgent.setAppkey("5641576767e58e7c4b004d4e");
-        UmengUpdateAgent.setChannel("Official");
         UmengUpdateAgent.setUpdateOnlyWifi(false);
         UmengUpdateAgent.setUpdateAutoPopup(false);
 

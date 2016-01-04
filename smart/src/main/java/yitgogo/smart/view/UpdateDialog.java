@@ -182,4 +182,5 @@ public class UpdateDialog extends DialogFragment {
         super.onDismiss(dialog);
         onDialogListener.onDismiss();
     }
+
 }
