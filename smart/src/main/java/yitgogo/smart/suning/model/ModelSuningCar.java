@@ -8,7 +8,7 @@ import org.json.JSONObject;
  */
 public class ModelSuningCar {
 
-    ModelProduct productDetail = new ModelProduct();
+    ModelProductDetail productDetail = new ModelProductDetail();
     int productCount = 0;
     int productSelection = 0;
 
@@ -19,13 +19,13 @@ public class ModelSuningCar {
         this.productCount = productCount;
         this.productSelection = productSelection;
         try {
-            productDetail = new ModelProduct(new JSONObject(object));
+            productDetail = new ModelProductDetail(new JSONObject(object));
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    public ModelProduct getProductDetail() {
+    public ModelProductDetail getProductDetail() {
         return productDetail;
     }
 

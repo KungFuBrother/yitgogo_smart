@@ -29,7 +29,7 @@ import yitgogo.smart.BaseNotifyFragment;
 import yitgogo.smart.order.model.User;
 import yitgogo.smart.order.ui.PayFragment;
 import yitgogo.smart.suning.model.GetNewSignature;
-import yitgogo.smart.suning.model.ModelProduct;
+import yitgogo.smart.suning.model.ModelProductDetail;
 import yitgogo.smart.suning.model.ModelProductPrice;
 import yitgogo.smart.suning.model.ModelSuningOrderResult;
 import yitgogo.smart.suning.model.SuningManager;
@@ -53,7 +53,7 @@ public class SuningProductBuyFragment extends BaseNotifyFragment {
 
     TextView buyButton;
 
-    ModelProduct productDetail = new ModelProduct();
+    ModelProductDetail productDetail = new ModelProductDetail();
     ModelProductPrice productPrice = new ModelProductPrice();
 
     User user;
@@ -98,7 +98,7 @@ public class SuningProductBuyFragment extends BaseNotifyFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             if (bundle.containsKey("product")) {
-                productDetail = new ModelProduct(new JSONObject(bundle.getString("product")));
+                productDetail = new ModelProductDetail(new JSONObject(bundle.getString("product")));
             }
         }
     }
@@ -413,7 +413,7 @@ public class SuningProductBuyFragment extends BaseNotifyFragment {
             nameValuePairs.add(new BasicNameValuePair("mobile", userPhoneEditText.getText().toString()));
             nameValuePairs.add(new BasicNameValuePair("address", userAddressEditText.getText().toString()));
             nameValuePairs.add(new BasicNameValuePair("jqm", Device.getDeviceCode()));
-            nameValuePairs.add(new BasicNameValuePair("amount", goodsMoney + ""));
+            nameValuePairs.add(new BasicNameValuePair("amount", decimalFormat.format(goodsMoney)));
             nameValuePairs.add(new BasicNameValuePair("provinceId", SuningManager.getSuningAreas().getProvince().getCode()));
             nameValuePairs.add(new BasicNameValuePair("cityId", SuningManager.getSuningAreas().getCity().getCode()));
             nameValuePairs.add(new BasicNameValuePair("countyId", SuningManager.getSuningAreas().getDistrict().getCode()));
@@ -423,7 +423,7 @@ public class SuningProductBuyFragment extends BaseNotifyFragment {
             try {
                 skuObject.put("number", productDetail.getSku());
                 skuObject.put("num", buyCount);
-                skuObject.put("price", productPrice.getPrice());
+                skuObject.put("price", decimalFormat.format(productPrice.getPrice()));
                 skuObject.put("name", productDetail.getName());
                 skuObject.put("attr", productDetail.getModel());
                 skuArray.put(skuObject);

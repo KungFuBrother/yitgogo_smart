@@ -1,4 +1,4 @@
-package smartown.controller.shoppingcart;
+package com.smartown.framework.shoppingcart;
 
 /**
  * Created by Tiger on 2015-11-27.

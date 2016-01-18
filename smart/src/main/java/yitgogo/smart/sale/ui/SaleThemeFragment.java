@@ -39,6 +39,9 @@ import java.util.List;
 import yitgogo.smart.BaseNotifyFragment;
 import yitgogo.smart.home.model.HomeData;
 import yitgogo.smart.home.model.ModelSaleTheme;
+import yitgogo.smart.local.LocalGoodsDetailFragment;
+import yitgogo.smart.local.LocalServiceDetailFragment;
+import yitgogo.smart.suning.ui.ProductDetailFragment;
 import yitgogo.smart.tools.QrCodeTool;
 
 public class SaleThemeFragment extends BaseNotifyFragment {
@@ -279,6 +282,38 @@ public class SaleThemeFragment extends BaseNotifyFragment {
 
         @JavascriptInterface
         public boolean showProductInfo(String productId) {
+            String id = productId;
+            int type = 1;
+
+            if (productId.contains("-")) {
+                int index = productId.lastIndexOf("-");
+                id = productId.substring(0, index);
+                try {
+                    type = Integer.parseInt(productId.substring(index + 1, productId.length()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            switch (type) {
+                case 1:
+                    showProductDetail(id, QrCodeTool.SALE_TYPE_NONE);
+                    break;
+                case 2:
+                    Bundle bundle2 = new Bundle();
+                    bundle2.putString("goodsId", id);
+                    openWindow(LocalGoodsDetailFragment.class.getName(), "商品详情", bundle2);
+                    break;
+                case 3:
+                    Bundle bundle3 = new Bundle();
+                    bundle3.putString("productId", id);
+                    openWindow(LocalServiceDetailFragment.class.getName(), "商品详情", bundle3);
+                    break;
+                case 4:
+                    Bundle bundle4 = new Bundle();
+                    bundle4.putString("skuId", id);
+                    openWindow(ProductDetailFragment.class.getName(), "商品详情", bundle4);
+                    break;
+            }
             showProductDetail(productId, QrCodeTool.SALE_TYPE_NONE);
             return true;
         }

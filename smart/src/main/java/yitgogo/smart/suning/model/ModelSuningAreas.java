@@ -8,13 +8,13 @@ import yitgogo.smart.tools.Parameters;
 
 /**
  * Created by Tiger on 2015-10-19.
- * <p/>
+ * <p>
  * {
  * "code": "04",
  * "name": "武侯区"
  * }
  */
-    public class ModelSuningAreas {
+public class ModelSuningAreas {
 
     ModelSuningArea province = new ModelSuningArea();
     ModelSuningArea city = new ModelSuningArea();
@@ -23,8 +23,8 @@ import yitgogo.smart.tools.Parameters;
 
 
     public ModelSuningAreas(JSONObject object) {
-        if (object!=null){
-            if (object.length()>0) {
+        if (object != null) {
+            if (object.length() > 0) {
                 province = new ModelSuningArea(object.optJSONObject("province"));
                 city = new ModelSuningArea(object.optJSONObject("city"));
                 district = new ModelSuningArea(object.optJSONObject("district"));

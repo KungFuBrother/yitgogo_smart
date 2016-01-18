@@ -85,17 +85,15 @@ public class PayFragment extends DialogFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             if (bundle.containsKey("orderNumbers")) {
-                if (bundle.containsKey("orderNumbers")) {
-                    List<String> orderNumbers = bundle
-                            .getStringArrayList("orderNumbers");
-                    for (int i = 0; i < orderNumbers.size(); i++) {
-                        if (i > 0) {
-                            this.orderNumbers += ",";
-                            orderNumbersShow += "\n";
-                        }
-                        this.orderNumbers += orderNumbers.get(i);
-                        orderNumbersShow += orderNumbers.get(i);
+                List<String> orderNumbers = bundle
+                        .getStringArrayList("orderNumbers");
+                for (int i = 0; i < orderNumbers.size(); i++) {
+                    if (i > 0) {
+                        this.orderNumbers += ",";
+                        orderNumbersShow += "\n";
                     }
+                    this.orderNumbers += orderNumbers.get(i);
+                    orderNumbersShow += orderNumbers.get(i);
                 }
             }
             if (bundle.containsKey("totalMoney")) {

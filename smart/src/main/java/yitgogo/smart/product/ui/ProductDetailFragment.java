@@ -38,13 +38,13 @@ import org.json.JSONObject;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 
-import smartown.controller.shoppingcart.DataBaseHelper;
-import smartown.controller.shoppingcart.ShoppingCartController;
+import com.smartown.framework.shoppingcart.DataBaseHelper;
+import com.smartown.framework.shoppingcart.ShoppingCartController;
 import yitgogo.smart.BaseNotifyFragment;
 import yitgogo.smart.model.ModelMachineArea;
 import yitgogo.smart.order.ui.ProductPlatformBuyFragment;
+import yitgogo.smart.product.model.ModelFreight;
 import yitgogo.smart.product.model.ModelProduct;
 import yitgogo.smart.sale.model.ModelSaleDetailMiaosha;
 import yitgogo.smart.sale.model.ModelSaleDetailTejia;
@@ -68,7 +68,7 @@ public class ProductDetailFragment extends BaseNotifyFragment {
 
     ViewPager imagePager;
     LinearLayout activityLayout;
-    TextView nameTextView, brandTextView, priceTextView, originalPriceTextView, stateTextView, attrTextView;
+    TextView nameTextView, freightLableTextView, brandTextView, priceTextView, originalPriceTextView, stateTextView, attrTextView;
     ImageView lastImageButton, nextImageButton;
     TextView imageIndexText;
 
@@ -100,7 +100,7 @@ public class ProductDetailFragment extends BaseNotifyFragment {
 
     ModelMachineArea machineArea = new ModelMachineArea();
 
-    HashMap<String, Double> freightMap;
+    HashMap<String, ModelFreight> freightMap;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -149,6 +149,7 @@ public class ProductDetailFragment extends BaseNotifyFragment {
         imagePager = (ViewPager) contentView.findViewById(R.id.product_detail_images);
         activityLayout = (LinearLayout) contentView.findViewById(R.id.product_detail_activity);
         nameTextView = (TextView) contentView.findViewById(R.id.product_detail_name);
+        freightLableTextView = (TextView) contentView.findViewById(R.id.product_detail_freight_lable);
         brandTextView = (TextView) contentView.findViewById(R.id.product_detail_brand);
         priceTextView = (TextView) contentView.findViewById(R.id.product_detail_price);
         originalPriceTextView = (TextView) contentView.findViewById(R.id.product_detail_price_original);
@@ -832,17 +833,24 @@ public class ProductDetailFragment extends BaseNotifyFragment {
                                     JSONArray jsonArray = object.optJSONArray("dataList");
                                     if (jsonArray != null) {
                                         for (int i = 0; i < jsonArray.length(); i++) {
-                                            JSONObject jsonObject = jsonArray.optJSONObject(i);
-                                            if (jsonObject != null) {
-                                                Iterator<String> keys = jsonObject.keys();
-                                                while (keys.hasNext()) {
-                                                    String key = keys.next();
-                                                    freightMap.put(key, jsonObject.optDouble(key));
-                                                }
+                                            ModelFreight modelFreight = new ModelFreight(jsonArray.optJSONObject(i));
+                                            if (!TextUtils.isEmpty(modelFreight.getAgencyId())) {
+                                                freightMap.put(modelFreight.getAgencyId(), modelFreight);
                                             }
                                         }
                                         if (freightMap.containsKey(productDetail.getSupplierId())) {
-                                            freightTextView.setText("运费:" + Parameters.CONSTANT_RMB + decimalFormat.format(freightMap.get(productDetail.getSupplierId())));
+                                            freightTextView.setVisibility(View.VISIBLE);
+                                            freightTextView.setText("运费:" + Parameters.CONSTANT_RMB + decimalFormat.format(freightMap.get(productDetail.getSupplierId()).getFregith()));
+                                            if (!TextUtils.isEmpty(freightMap.get(productDetail.getSupplierId()).getPrompt())) {
+                                                freightLableTextView.setVisibility(View.VISIBLE);
+                                                freightLableTextView.setText(freightMap.get(productDetail.getSupplierId()).getPrompt());
+                                            } else {
+                                                freightLableTextView.setVisibility(View.GONE);
+                                                freightLableTextView.setText("");
+                                            }
+                                        } else {
+                                            freightTextView.setText("");
+                                            freightLableTextView.setVisibility(View.GONE);
                                         }
                                     }
                                     return;
@@ -893,7 +901,7 @@ public class ProductDetailFragment extends BaseNotifyFragment {
                     bundle.putInt("isIntegralMall", isIntegralMall);
                     bundle.putInt("buyCount", buyCount);
                     bundle.putDouble("price", price);
-                    bundle.putDouble("freight", freightMap.get(productDetail.getSupplierId()));
+                    bundle.putDouble("freight", freightMap.get(productDetail.getSupplierId()).getFregith());
                     openWindow(ProductPlatformBuyFragment.class.getName(), "确认订单", bundle);
                 } else {
                     Notify.show("查询运费失败，暂不能购买");

@@ -28,11 +28,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import smartown.controller.mission.MissionController;
-import smartown.controller.mission.MissionMessage;
-import smartown.controller.mission.Request;
-import smartown.controller.mission.RequestListener;
-import smartown.controller.mission.RequestMessage;
+import com.smartown.framework.mission.MissionController;
+import com.smartown.framework.mission.MissionMessage;
+import com.smartown.framework.mission.Request;
+import com.smartown.framework.mission.RequestListener;
+import com.smartown.framework.mission.RequestMessage;
 import yitgogo.smart.BaseNotifyFragment;
 import yitgogo.smart.suning.model.GetNewSignature;
 import yitgogo.smart.suning.model.ModelProduct;
@@ -165,8 +165,7 @@ public class SuningProductFragment extends BaseNotifyFragment {
                 if (priceHashMap.containsKey(product.getSku())) {
                     if (priceHashMap.get(product.getSku()).getPrice() > 0) {
                         Bundle bundle = new Bundle();
-                        bundle.putString("product", product.getJsonObject().toString());
-                        bundle.putString("price", priceHashMap.get(product.getSku()).getJsonObject().toString());
+                        bundle.putString("skuId", product.getSku());
                         openWindow(ProductDetailFragment.class.getName(), product.getName(), bundle);
                     } else {
                         Notify.show("此商品暂未设置价格");

@@ -440,7 +440,7 @@ public class ShoppingCarBuyFragment extends BaseNotifyFragment {
             nameValuePairs.add(new BasicNameValuePair("mobile", userPhoneEditText.getText().toString()));
             nameValuePairs.add(new BasicNameValuePair("address", userAddressEditText.getText().toString()));
             nameValuePairs.add(new BasicNameValuePair("jqm", Device.getDeviceCode()));
-            nameValuePairs.add(new BasicNameValuePair("amount", goodsMoney + ""));
+            nameValuePairs.add(new BasicNameValuePair("amount", decimalFormat.format(goodsMoney)));
             nameValuePairs.add(new BasicNameValuePair("provinceId", SuningManager.getSuningAreas().getProvince().getCode()));
             nameValuePairs.add(new BasicNameValuePair("cityId", SuningManager.getSuningAreas().getCity().getCode()));
             nameValuePairs.add(new BasicNameValuePair("countyId", SuningManager.getSuningAreas().getDistrict().getCode()));
@@ -452,7 +452,7 @@ public class ShoppingCarBuyFragment extends BaseNotifyFragment {
                         JSONObject skuObject = new JSONObject();
                         skuObject.put("number", suningCars.get(i).getProductDetail().getSku());
                         skuObject.put("num", suningCars.get(i).getProductCount());
-                        skuObject.put("price", priceHashMap.get(suningCars.get(i).getProductDetail().getSku()).getPrice());
+                        skuObject.put("price", decimalFormat.format(priceHashMap.get(suningCars.get(i).getProductDetail().getSku()).getPrice()));
                         skuObject.put("name", suningCars.get(i).getProductDetail().getName());
                         skuObject.put("attr", suningCars.get(i).getProductDetail().getModel());
                         skuArray.put(skuObject);

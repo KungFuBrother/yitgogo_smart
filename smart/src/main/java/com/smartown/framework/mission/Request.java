@@ -1,4 +1,4 @@
-package smartown.controller.mission;
+package com.smartown.framework.mission;
 
 import android.text.TextUtils;
 

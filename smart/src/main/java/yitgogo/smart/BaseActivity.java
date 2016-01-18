@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import smartown.controller.mission.MissionController;
+import com.smartown.framework.mission.MissionController;
 import yitgogo.smart.tools.LogUtil;
 
 public class BaseActivity extends FragmentActivity {

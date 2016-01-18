@@ -1,5 +1,7 @@
 package yitgogo.smart.tools;
 
+import com.smartown.jni.YtBox;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -63,6 +65,7 @@ public class NetworkMission extends Mission {
         // }
         try {
             httpPost.setHeader("version", PackageTool.getVersionName());
+            httpPost.setHeader("token", YtBox.encode(SignatureTool.key, SignatureTool.getSignature() + System.currentTimeMillis()));
             httpPost.setEntity(new UrlEncodedFormEntity(networkContent.getNameValuePairs(), HTTP.UTF_8));
             HttpClient client = getHttpClient();
             client.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 8000);

@@ -1,4 +1,4 @@
-package smartown.controller.mission;
+package com.smartown.framework.mission;
 
 /**
  * Created by Smartown on 15/11/29.

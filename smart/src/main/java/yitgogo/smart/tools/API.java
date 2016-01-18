@@ -10,7 +10,9 @@ public interface API {
 
     String IP_PUBLIC = "http://yitos.net";
     //    String IP_PUBLIC = "http://192.168.8.8:8050";
-    //    String IP_PUBLIC = "http://192.168.8.8:9001";
+//    String IP_PUBLIC = "http://192.168.8.8:9001";
+//    String IP_PUBLIC = "http://42.96.249.111";
+    //    String IP_SUNING = "http://gcapi.suning.com";
     String IP_SUNING = "http://gcapi.suning.com";
 //    String IP_SUNING = "http://58.240.86.161";
 

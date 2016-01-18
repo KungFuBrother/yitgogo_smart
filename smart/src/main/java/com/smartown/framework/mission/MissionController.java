@@ -1,7 +1,9 @@
-package smartown.controller.mission;
+package com.smartown.framework.mission;
 
 import android.content.Context;
 import android.text.TextUtils;
+
+import com.smartown.jni.YtBox;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,6 +25,7 @@ import java.util.concurrent.Executors;
 
 import yitgogo.smart.tools.LogUtil;
 import yitgogo.smart.tools.PackageTool;
+import yitgogo.smart.tools.SignatureTool;
 
 public class MissionController {
 
@@ -84,6 +87,7 @@ public class MissionController {
             httpURLConnection.setConnectTimeout(5000);//连接超时 单位毫秒
             httpURLConnection.setReadTimeout(5000);//读取超时 单位毫秒
             httpURLConnection.setRequestProperty("version", PackageTool.getVersionName());
+            httpURLConnection.setRequestProperty("token", YtBox.encode(SignatureTool.key, SignatureTool.getSignature() + System.currentTimeMillis()));
             if (!request.getRequestParams().isEmpty()) {
                 StringBuffer stringBuffer = new StringBuffer();
                 for (int i = 0; i < request.getRequestParams().size(); i++) {
@@ -147,6 +151,8 @@ public class MissionController {
             httpURLConnection.setUseCaches(false); // Post 请求不能使用缓存
             httpURLConnection.setConnectTimeout(5000);//连接超时 单位毫秒
             httpURLConnection.setReadTimeout(5000);//读取超时 单位毫秒
+            httpURLConnection.setRequestProperty("version", PackageTool.getVersionName());
+            httpURLConnection.setRequestProperty("token", YtBox.encode(SignatureTool.key, SignatureTool.getSignature() + System.currentTimeMillis()));
             int responseCode = httpURLConnection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 StringBuilder stringBuilder = new StringBuilder();
@@ -180,6 +186,8 @@ public class MissionController {
             httpURLConnection.setUseCaches(false); // Post 请求不能使用缓存
             httpURLConnection.setConnectTimeout(5000);//连接超时 单位毫秒
             httpURLConnection.setReadTimeout(5000);//读取超时 单位毫秒
+            httpURLConnection.setRequestProperty("version", PackageTool.getVersionName());
+            httpURLConnection.setRequestProperty("token", YtBox.encode(SignatureTool.key, SignatureTool.getSignature() + System.currentTimeMillis()));
             int responseCode = httpURLConnection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 InputStream inputStream = httpURLConnection.getInputStream();

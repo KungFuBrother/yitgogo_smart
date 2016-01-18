@@ -68,6 +68,12 @@ public class LocalSaleMiaoshaDetailFragment extends BaseNotifyFragment
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getLocalSaleMiaoshaDetail();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         MobclickAgent.onPageStart(LocalSaleMiaoshaDetailFragment.class.getName());
@@ -77,7 +83,6 @@ public class LocalSaleMiaoshaDetailFragment extends BaseNotifyFragment
     public void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd(LocalSaleMiaoshaDetailFragment.class.getName());
-        getLocalSaleMiaoshaDetail();
     }
 
     private void init() {

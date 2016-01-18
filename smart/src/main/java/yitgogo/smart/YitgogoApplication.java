@@ -2,24 +2,27 @@ package yitgogo.smart;
 
 import android.app.Application;
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.utils.L;
+import com.smartown.framework.shoppingcart.DataBaseHelper;
+import com.smartown.jni.YtBox;
 import com.smartown.yitgogo.smart.R;
 import com.umeng.analytics.AnalyticsConfig;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 
-import smartown.controller.shoppingcart.DataBaseHelper;
 import yitgogo.smart.suning.model.SuningCarController;
 import yitgogo.smart.tools.Content;
 import yitgogo.smart.tools.Device;
 import yitgogo.smart.tools.LogUtil;
 import yitgogo.smart.tools.PackageTool;
 import yitgogo.smart.tools.ScreenUtil;
+import yitgogo.smart.tools.SignatureTool;
 import yitgogo.smart.view.Notify;
 
 public class YitgogoApplication extends Application {
@@ -41,6 +44,7 @@ public class YitgogoApplication extends Application {
         LogUtil.setLogEnable(true);
         initImageLoader();
         initUmeng();
+        initSignature();
     }
 
     private void initImageLoader() {
@@ -91,6 +95,12 @@ public class YitgogoApplication extends Application {
         UmengUpdateAgent.setUpdateOnlyWifi(false);
         UmengUpdateAgent.setUpdateAutoPopup(false);
 
+    }
+
+    private void initSignature() {
+        if (TextUtils.isEmpty(SignatureTool.getSignature())) {
+            SignatureTool.saveSignature(YtBox.encode(SignatureTool.key, "ytshowz" + Device.getDeviceCode()));
+        }
     }
 
 }

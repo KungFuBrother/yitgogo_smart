@@ -1,4 +1,4 @@
-package smartown.controller.mission;
+package com.smartown.framework.mission;
 
 import android.content.Context;
 import android.content.SharedPreferences;

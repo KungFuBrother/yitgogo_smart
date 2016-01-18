@@ -1,5 +1,20 @@
 package yitgogo.smart.tools;
 
+import android.content.Context;
+
+import com.smartown.jni.YtBox;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ConnectTimeoutException;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.protocol.HTTP;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,20 +28,6 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.ConnectTimeoutException;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.CoreConnectionPNames;
-import org.apache.http.protocol.HTTP;
-
-import android.content.Context;
-import android.util.Log;
 
 public class MissionController {
 
@@ -98,6 +99,7 @@ public class MissionController {
         StringBuilder stringBuilder = new StringBuilder();
         HttpPost httpPost = new HttpPost(url);
         httpPost.setHeader("version", PackageTool.getVersionName());
+        httpPost.setHeader("token", YtBox.encode(SignatureTool.key, SignatureTool.getSignature() + System.currentTimeMillis()));
         try {
             if (nameValuePairs != null) {
                 httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
